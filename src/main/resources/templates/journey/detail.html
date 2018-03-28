@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8" />
+    <title>旅程</title>
+</head>
+<body>
+<h1>旅程</h1>
+
+<div>
+    <form th:action="@{/journey/detail/update}" method="post"  th:object="${detailForm}">
+    <table>
+        <tr>
+            <th>
+                タイトル
+            </th>
+            <td>
+                <input type="text" th:field="*{title}"/>
+            </td>
+            <td th:if="${#fields.hasErrors('*{title}')}" th:errors="*{title}">
+            </td>
+        </tr>
+        <tr>
+            <th>
+                説明
+            </th>
+            <td>
+                <input type="text" th:field="*{description}"/>
+            </td>
+            <td th:if="${#fields.hasErrors('*{description}')}" th:errors="*{description}">
+            </td>
+        </tr>
+    </table>
+        <input type="hidden" th:field="*{id}"/>
+        <input type="submit" value="更新">
+    </form>
+</div>

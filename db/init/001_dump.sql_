@@ -1,0 +1,57 @@
+DROP TABLE IF EXISTS t_member;
+CREATE TABLE IF NOT EXISTS t_member (
+    id              BIGINT      NOT NULL    AUTO_INCREMENT
+    ,login_id       VARCHAR(200)
+    ,tmp_login_id   VARCHAR(200)
+    ,password       VARCHAR(100)
+    ,nickname       VARCHAR(100)
+    ,updated_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ,updated_user   VARCHAR(255)
+    ,created_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    ,created_user   VARCHAR(255)
+    ,PRIMARY KEY (id)
+) ENGINE=INNODB ROW_FORMAT=DYNAMIC;
+
+insert into t_member (id, login_id,password) values (null, 'test','$2a$10$eSjhl5MX6dYtkE2FveuAZe6TPksic26D8HXfcAE/1QHIGhkP4Zo.a');
+
+DROP TABLE IF EXISTS t_journey;
+CREATE TABLE IF NOT EXISTS t_journey (
+    id              BIGINT       NOT NULL    AUTO_INCREMENT
+    ,member_id      BIGINT       NOT NULL
+    ,title          VARCHAR(255) NOT NULL
+    ,description    VARCHAR(255)
+    ,updated_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ,updated_user   VARCHAR(255)
+    ,created_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    ,created_user   VARCHAR(255)
+    ,PRIMARY KEY (id)
+) ENGINE=INNODB ROW_FORMAT=DYNAMIC;
+
+DROP TABLE IF EXISTS t_journey_timeline;
+CREATE TABLE IF NOT EXISTS t_journey_timeline (
+    id              BIGINT       NOT NULL    AUTO_INCREMENT
+    ,journey_id     BIGINT       NOT NULL
+    ,start_date         TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ,end_date           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ,title              VARCHAR(255)
+    ,description        VARCHAR(255)
+    ,updated_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ,updated_user   VARCHAR(255)
+    ,created_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    ,created_user   VARCHAR(255)
+    ,PRIMARY KEY (id)
+) ENGINE=INNODB ROW_FORMAT=DYNAMIC;
+
+DROP TABLE IF EXISTS t_journey_member;
+CREATE TABLE IF NOT EXISTS t_journey_member (
+    id              BIGINT       NOT NULL    AUTO_INCREMENT
+    ,journey_id     BIGINT       NOT NULL
+    ,member_id      BIGINT       NOT NULL
+    ,name              VARCHAR(255)
+    ,updated_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ,updated_user   VARCHAR(255)
+    ,created_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    ,created_user   VARCHAR(255)
+    ,PRIMARY KEY (id)
+    ,UNIQUE (journey_id,member_id)
+) ENGINE=INNODB ROW_FORMAT=DYNAMIC;

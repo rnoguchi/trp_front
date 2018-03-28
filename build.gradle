@@ -1,0 +1,103 @@
+buildscript {
+	ext {
+		kotlinVersion = '1.2.20'
+        domaVersion = '2.16.1'
+		springBootVersion = '2.0.0.RELEASE'
+        domaGenVersion = '2.19.2'
+        resourceDir = 'src/main/resources'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+	}
+}
+apply plugin: 'idea'
+idea {
+    module {
+        outputDir file('build/classes/main')
+        testOutputDir file('build/classes/test')
+    }
+}
+
+if(project.convention.findPlugin(JavaPluginConvention)) {
+    // Change the output directory for the main and test source sets back to the old path
+ 	sourceSets.main.output.classesDir = new File(buildDir, "classes/main")
+ 	sourceSets.test.output.classesDir = new File(buildDir, "classes/test")
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'jp.nr.trp.front'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+// JavaクラスとSQLファイルの出力先ディレクトリを同じにする
+processResources.destinationDir = compileJava.destinationDir
+// コンパイルより前にSQLファイルを出力先ディレクトリにコピーするために依存関係を逆転する
+compileJava.dependsOn processResources
+configurations {
+    domaGenRuntime
+}
+compileKotlin {
+	kotlinOptions {
+		freeCompilerArgs = ["-Xjsr305=strict"]
+		jvmTarget = "1.8"
+	}
+}
+compileTestKotlin {
+	kotlinOptions {
+		freeCompilerArgs = ["-Xjsr305=strict"]
+		jvmTarget = "1.8"
+	}
+}
+
+repositories {
+	mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+	compile("org.springframework.boot:spring-boot-starter-security")
+	compile("org.springframework.security:spring-security-test")
+	runtime('org.springframework.boot:spring-boot-devtools')
+	compile(group: 'mysql', name: 'mysql-connector-java', version: '6.0.6')
+	compile('org.seasar.doma.boot:doma-spring-boot-starter:1.1.1')
+    kapt("org.seasar.doma:doma:$domaVersion")
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+    domaGenRuntime("org.seasar.doma:doma-gen:$domaGenVersion")
+    domaGenRuntime(group: 'mysql', name: 'mysql-connector-java', version: '6.0.6')
+}
+
+task gen << {
+
+    ant.taskdef(resource: 'domagentask.properties',
+            classpath: configurations.domaGenRuntime.asPath)
+    ant.gen(url: 'jdbc:mysql://0.0.0.0:3308/trp?nullNamePatternMatchesAll=true', user: 'root', password: 'root', templatePrimaryDir: "${resourceDir}/config/doma/templates") {
+        entityConfig(
+                packageName: 'jp.nr.trp.front.entity'
+                , useAccessor: false
+                , useListener: true
+                , overwrite: true
+                , overwriteListener: true
+                //, superclassName: 'jp.nr.trp.front.entity.CommonEntity'
+                , listenerSuperclassName: 'jp.nr.trp.front.listener.CommonEntityListener'
+        )
+        daoConfig(
+                packageName: 'jp.nr.trp.front.repository'
+                , suffix: 'Repository'
+        )
+        sqlConfig()
+    }
+}
