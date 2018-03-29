@@ -1,10 +1,12 @@
 package jp.nr.trp.front.entity;
 
 import org.seasar.doma.Column;
+import org.seasar.doma.Entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
 public class CommonEntity implements Serializable {
 
     /**  */

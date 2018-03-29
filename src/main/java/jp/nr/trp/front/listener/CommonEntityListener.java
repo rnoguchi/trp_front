@@ -11,14 +11,14 @@ public class CommonEntityListener<T extends CommonEntity> implements EntityListe
     @Override
     public void preUpdate(T entity, PreUpdateContext<T> context) {
         entity.updatedAt = TrpDateUtil.get();
-        entity.updatedUser = context.getMethod().getClass().getName();
+        entity.updatedUser = context.getMethod().getDeclaringClass().getName();
     }
 
     @Override
     public void preInsert(T entity, PreInsertContext<T> context) {
         entity.updatedAt = TrpDateUtil.get();
-        entity.updatedUser = context.getMethod().getClass().getName();
+        entity.updatedUser = context.getMethod().getDeclaringClass().getName();
         entity.createdAt = TrpDateUtil.get();
-        entity.createdUser = context.getMethod().getClass().getName();
+        entity.createdUser = context.getMethod().getDeclaringClass().getName();
     }
 }
