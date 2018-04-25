@@ -26,12 +26,12 @@ class AuthService(
         }
 
         try {
-            var member: TMember =
+            val member: TMember =
                     tMemberService.selectByLoginId(loginId) ?: throw UsernameNotFoundException("User not found for login id: " + loginId)
 
             return LoginUser(member)
 
-        } catch (e: Exception) {
+        } catch (e: UsernameNotFoundException) {
             logger.error("It can not be acquired User", e)
             throw UsernameNotFoundException("It can not be acquired User")
         }

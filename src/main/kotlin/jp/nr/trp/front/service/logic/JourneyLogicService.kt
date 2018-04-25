@@ -13,25 +13,13 @@ import javax.servlet.http.HttpSession
 class JourneyLogicService(
         val tJourneyService: TJourneyService,
         val memberLogicService: MemberLogicService
-) {
+) : BaseLogicService() {
 
-    fun getJourneyList(session: HttpSession, userDetails: UserDetails): List<TJourney>? {
-        val tmpLSession = session.getAttribute("tmpLoginId")
-        if (userDetails == null && tmpLSession == null) {
-            return null
-        }
-
-        var journeyList: List<TJourney>? = null
-        if (userDetails != null) {
-            journeyList = tJourneyService.selectMyJourneryByLoginId(userDetails.username)
-        } else if (tmpLSession is TMember) {
-            journeyList = tJourneyService.selectMyJourneryByTmpLoginId(tmpLSession.loginId)
-        }
-
-        return journeyList
+    fun getJourneyList(session: HttpSession, userDetails: UserDetails?): List<TJourney>? {
+        return tJourneyService.selectMyJourneryByLoginId(getUserId(session, userDetails));
     }
 
-    fun updateJournery(detailForm: DetailForm, userDetails: UserDetails, session: HttpSession): TJourney {
+    fun updateJournery(detailForm: DetailForm, userDetails: UserDetails?, session: HttpSession): TJourney {
 
         var entity: TJourney? = null
         if (!StringUtils.isEmpty(detailForm.id)) {

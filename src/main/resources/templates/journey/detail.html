@@ -10,29 +10,52 @@
 
 <div>
     <form th:action="@{/journey/detail/update}" method="post"  th:object="${detailForm}">
-    <table>
-        <tr>
-            <th>
-                タイトル
-            </th>
-            <td>
-                <input type="text" th:field="*{title}"/>
-            </td>
-            <td th:if="${#fields.hasErrors('*{title}')}" th:errors="*{title}">
-            </td>
-        </tr>
-        <tr>
-            <th>
-                説明
-            </th>
-            <td>
-                <input type="text" th:field="*{description}"/>
-            </td>
-            <td th:if="${#fields.hasErrors('*{description}')}" th:errors="*{description}">
-            </td>
-        </tr>
-    </table>
+        <table>
+            <tr>
+                <th>
+                    タイトル
+                </th>
+                <td>
+                    <input type="text" th:field="*{title}"/>
+                </td>
+                <td th:if="${#fields.hasErrors('*{title}')}" th:errors="*{title}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    説明
+                </th>
+                <td>
+                    <input type="text" th:field="*{description}"/>
+                </td>
+                <td th:if="${#fields.hasErrors('*{description}')}" th:errors="*{description}">
+                </td>
+            </tr>
+        </table>
+        <table>
+            <thead>タイムライン</thead>
+            <th:block th:each="timeline, rowStat : *{timelineList}">
+                <tr>
+                    <td>
+                        タイトル：<input type="text" th:field="*{timelineList[__${rowStat.index}__].title}"/>
+                    </td>
+                    <td>
+                        説明：<input type="text" th:field="*{timelineList[__${rowStat.index}__].description}"/>
+                    </td>
+                    <td>
+                        開始日時：<input type="text" th:field="*{timelineList[__${rowStat.index}__].startDate}"/>
+                    </td>
+                    <td>
+                        終了日時：<input type="text" th:field="*{timelineList[__${rowStat.index}__].endDate}"/>
+                    </td>
+                    <input type="hidden" th:field="*{timelineList[__${rowStat.index}__].journeyId}" />
+                </tr>
+            </th:block>
+        </table>
+        <input type="button" class="append" value="追加">
         <input type="hidden" th:field="*{id}"/>
         <input type="submit" value="更新">
     </form>
 </div>
+</body>
+</html>

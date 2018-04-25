@@ -1,14 +1,16 @@
-package jp.nr.trp.front.form.journey
+package jp.nr.trp.front.dto
 
-import jp.nr.trp.front.dto.TimelineDto
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
-class DetailForm {
-
-    @Pattern(regexp="[0-9]*")
+class TimelineDto {
     var id: String = ""
+
+    var journeyId: String = ""
+
+    var startDate: String = ""
+
+    var endDate: String = ""
 
     @NotBlank
     @Size(max=200)
@@ -17,6 +19,4 @@ class DetailForm {
     @NotBlank
     @Size(max=2000)
     var description: String = ""
-
-    var timelineList: MutableList<TimelineDto> = mutableListOf()
 }

@@ -8,11 +8,16 @@ import org.springframework.stereotype.Service
 class TMemberService(
         val tMemberRepository: TMemberRepository
 ) {
-    fun selectByLoginId(loginId: String): TMember {
+    fun selectByLoginId(loginId: String): TMember? {
         return this.tMemberRepository.selectByLoginId(loginId)
     }
 
-    fun selectByTmpLoginId(tmpLoginId: String): TMember {
+    fun selectByTmpLoginId(tmpLoginId: String): TMember? {
         return this.tMemberRepository.selectByTmpLoginId(tmpLoginId)
+    }
+
+    fun insert(entity: TMember): TMember {
+        tMemberRepository.insert(entity)
+        return entity;
     }
 }

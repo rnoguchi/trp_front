@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
 </head>
 <body>
 <p>Menuです</p>
+<a th:href="@{'/journey/list'}">ログインせずに使う</a>
+<a th:href="@{'/login'}">ログインして使う</a>
 </body>
 </html>

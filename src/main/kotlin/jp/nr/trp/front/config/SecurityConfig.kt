@@ -32,13 +32,11 @@ class SecurityConfig(
     @Override
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
-                .antMatchers("/", "/login", "/login-error")
-                .permitAll()
                 .anyRequest()
-                .authenticated()
+                .permitAll()
 
         http.formLogin()
-                .loginProcessingUrl("/login/auth")
+                .loginProcessingUrl("/auth/login")
                 .loginPage("/login")
                 .failureHandler(failureHandler)
                 .successHandler(successHandler)

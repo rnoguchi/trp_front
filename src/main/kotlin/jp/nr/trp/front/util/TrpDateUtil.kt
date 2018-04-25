@@ -1,6 +1,7 @@
 package jp.nr.trp.front.util
 
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class TrpDateUtil() {
 
@@ -19,5 +20,7 @@ class TrpDateUtil() {
                 return LocalDateTime.now()
             }
         }
+
+        @JvmStatic val dateFormatYYYYMMDDHHmmss = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
     }
 }

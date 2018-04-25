@@ -1,12 +1,10 @@
 package jp.nr.trp.front.repository;
 
 import jp.nr.trp.front.entity.TJourneyTimeline;
-import org.seasar.doma.Dao;
-import org.seasar.doma.Delete;
-import org.seasar.doma.Insert;
-import org.seasar.doma.Select;
-import org.seasar.doma.Update;
+import org.seasar.doma.*;
 import org.seasar.doma.boot.ConfigAutowireable;
+
+import java.util.List;
 
 /**
  */
@@ -20,6 +18,9 @@ public interface TJourneyTimelineRepository {
      */
     @Select
     TJourneyTimeline selectById(Long id);
+
+    @Select
+    List<TJourneyTimeline> selectTimelineByJourneyId(Long journeyId);
 
     /**
      * @param entity

@@ -1,4 +1,4 @@
-package jp.nr.trp.front.listener;
+package jp.nr.trp.front.interceptor;
 
 import jp.nr.trp.front.entity.CommonEntity;
 import jp.nr.trp.front.util.TrpDateUtil;
